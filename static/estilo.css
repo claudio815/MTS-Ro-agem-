@@ -1,0 +1,304 @@
+/* ==============================================================================
+   CONFIGURAÇÕES GERAIS DA PÁGINA
+   ============================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+/* Força todo o app a usar a fonte moderna Inter */
+.stApp {
+    font-family: 'Inter', sans-serif !important;
+    color: #1f2937;
+}
+
+/* Remove margens e topo padrão feio do Streamlit */
+.stMainBlockContainer {
+    padding-top: 0.5rem !important;
+    max-width: 1200px !important;
+}
+
+header {
+    display: none !important;
+}
+
+.espacador {
+    height: 40px;
+}
+
+/* ==============================================================================
+   NAVBAR / CABEÇALHO SUPERIOR
+   ============================================================================== */
+.st-key-nav-menu {
+    background-color: #ffffff !important;
+    padding: 15px 30px !important;
+    border-radius: 15px 15px 15px 15px !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+    margin-bottom: 15px !important;
+    border-bottom: 3px solid #16a34a !important;
+}
+
+.logo-texto {
+    font-weight: 800;
+    font-size: 20px;
+    color: #14532d;
+    letter-spacing: -0.5px;
+}
+
+.logo-sub {
+    font-size: 10px;
+    color: #16a34a;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.menu-links {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+
+.menu-links a {
+    text-decoration: none !important;
+    color: #4b5563 !important;
+    font-weight: 600;
+    font-size: 15px;
+    transition: color 0.2s;
+}
+
+.menu-links a:hover {
+    color: #16a34a !important;
+}
+
+.btn-whatsapp-top {
+    background-color: #16a34a !important;
+    color: white !important;
+    padding: 10px 18px !important;
+    border-radius: 8px !important;
+    text-decoration: none !important;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-block;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(22, 163, 74, 0.2);
+}
+
+/* ==============================================================================
+   SEÇÃO HERO (TEXTO DO BANNER)
+   ============================================================================== */
+.hero-sessao {
+    padding: 10px 0;
+}
+
+.hero-tagline {
+    color: #16a34a;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.hero-titulo {
+    font-size: 48px !important;
+    font-weight: 800 !important;
+    color: #14532d !important;
+    line-height: 1.1 !important;
+    margin-bottom: 20px !important;
+}
+
+.hero-descricao {
+    font-size: 18px;
+    color: #4b5563;
+    line-height: 1.5;
+}
+
+/* Botões de chamada para ação do Banner */
+.btn-solicitar {
+    background-color: #16a34a !important;
+    color: white !important;
+    padding: 14px 20px !important;
+    border-radius: 8px !important;
+    text-decoration: none !important;
+    font-weight: 600;
+    display: block;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(22, 163, 74, 0.3);
+}
+
+.btn-telefone {
+    background-color: #ffffff !important;
+    color: #14532d !important;
+    padding: 14px 20px !important;
+    border-radius: 8px !important;
+    text-decoration: none !important;
+    font-weight: 600;
+    display: block;
+    text-align: center;
+    border: 2px solid #e5e7eb !important;
+}
+
+/* Pequenas tags de vantagens */
+.badges-container {
+    margin-top: 25px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap
+}
+
+.badge {
+    
+    background-color: #f0fdf4;
+    color: #16a34a;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid #bbf7d0;
+}
+
+.titulo_do_meio{
+  text-align: center !important;
+  color: #16a34a !important;
+}
+/* ==============================================================================
+   CARDS DE DIFERENCIAIS
+   ============================================================================== */
+.card-diferencial {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 5px solid #16a34a;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    height: 100%;
+}
+
+.card-diferencial h3 {
+    font-size: 16px !important;
+    color: #14532d !important;
+    font-weight: 700 !important;
+    margin-bottom: 8px !important;
+}
+
+.card-diferencial p {
+    font-size: 13px;
+    color: #6b7280;
+    line-height: 1.4;
+}
+
+/* ==============================================================================
+   FORMULÁRIO DE ORÇAMENTO
+   ============================================================================== */
+.titulo-secao-container {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.titulo-secao {
+    color: #14532d !important;
+    font-weight: 800 !important;
+    font-size: 28px !important;
+}
+
+.subtitulo-secao {
+    color: #6b7280;
+    font-size: 15px;
+}
+
+/* Customização do bloco do formulário */
+.st-key-formulario-orcamento {
+    background-color: #ffffff !important;
+    padding: 30px !important;
+    border-radius: 16px !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Botão calcular verde grande */
+.st-key-butao button {
+    background-color: #16a34a !important;
+    color: white !important;
+    font-weight: 700 !important;
+    font-size: 16px !important;
+    padding: 12px 0px !important;
+    border-radius: 8px !important;
+    border: none !important;
+    transition: background-color 0.2s;
+}
+
+.st-key-butao button:hover {
+    background-color: #15803d !important;
+}
+
+/* ==============================================================================
+   SÉÇÃO DE RESULTADOS (ESTILO TABELA)
+   ============================================================================== */
+.resultado-box {
+    background-color: #f8fafc;
+    border: 2px solid #16a34a;
+    border-radius: 12px;
+    padding: 25px;
+    margin-top: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+}
+
+.resultado-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.res-item {
+    padding: 10px;
+    font-size: 15px;
+    color: #334155;
+    border-right: 1px solid #e2e8f0;
+}
+
+.res-item:last-child {
+    border-right: none;
+}
+
+.valor-destaque {
+    color: #16a34a !important;
+    font-size: 18px !important;
+    font-weight: bold;
+}
+
+.aviso-orcamento {
+    font-size: 12px;
+    color: #64748b;
+    text-align: center;
+    margin-top: 15px;
+}
+
+/* ==============================================================================
+   RODAPÉ (FOOTER)
+   ============================================================================== */
+.footer-completo {
+    background-color: #14532d;
+    color: #f0fdf4;
+    padding: 40px 40px 20px 40px;
+    border-radius: 16px 16px 0 0;
+    margin-top: 5px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.footer-col h3 {
+    color: #ffffff !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    margin-bottom: 12px !important;
+}
+
+.footer-col p {
+    font-size: 14px;
+    color: #bbf7d0;
+    line-height: 1.6;
+}
+
