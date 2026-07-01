@@ -57,14 +57,60 @@ with str_visual.container(key="nav-menu"):
         str_visual.markdown('<div class="logo-texto"> MTS ROÇAGEM</div><div class="logo-sub">SERVIÇOS PROFISSIONAIS</div>', unsafe_allow_html=True)
 
     with col_links:
-        # Criando a estrutura das Abas organizadas
         tab1, tab2, tab3 = str_visual.tabs(["Home", "Sobre", "Lista"])
 
 # ==============================================================================
-# ABA 1 - HOME (CONTEÚDO PRINCIPAL DO SITE)
+# CONTEÚDO DA PÁGINA HOME (TUDO JUNTO AQUI COMO ANTES)
 # ==============================================================================
 with tab1:
-    # 3. SEÇÃO HERO / BANNER PRINCIPAL
+    
+    # ---- CONEXÃO COM O BANCO DE DADOS (SUPABASE) ----
+    SUPABASE_URL = str_visual.secrets["SUPABASE_URL"]
+    SUPABASE_KEY = str_visual.secrets["SUPABASE_KEY"]
+
+    # Inicializa o cliente do banco de dados na nuvem
+    supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+    str_visual.title("🌱 Portal Roçagem Saquarema")
+    str_visual.subheader("Olá Claudio! Testando o banco de dados com Streamlit")
+
+    # Formulário para organizar os campos na tela (Salva no Supabase)
+    with str_visual.form("formulario_orcamento"):
+        txt_nome = str_visual.text_input("Nome do Cliente", placeholder="Ex: Danilo")
+        txt_whatsapp = str_visual.text_input("WhatsApp", placeholder="Ex: 229098807")
+        txt_terreno = str_visual.number_input("Tamanho do Terreno (m²)", min_value=0, step=1)
+        chk_lixo = str_visual.checkbox("Com retirada de lixo?")
+
+        # Botão para disparar o cálculo e o envio
+        btn_enviar = str_visual.form_submit_button("Calcular e Salvar no Banco")
+
+    # Lógica de Processamento e Salvamento do Banco
+    if btn_enviar:
+        if not txt_nome or not txt_whatsapp or txt_terreno == 0:
+            str_visual.warning("⚠️ Por favor, preencha todos os campos do formulário!")
+        else:
+            try:
+                # 1. Realiza o cálculo do orçamento (Ex: R$ 1,50 por m² + R$ 100 do lixo)
+                valor_base = txt_terreno * 1.50
+                adicional_lixo = 100.0 if chk_lixo else 0.0
+                total_supabase = valor_base + adicional_lixo
+
+                # 2. Insere os dados diretamente na tabela "orcamentos" do Supabase
+                supabase.table("orcamentos").insert({
+                    "nome_cliente": txt_nome,
+                    "whatsapp": txt_whatsapp,
+                    "tamanho_terreno": txt_terreno,
+                    "com_retirada_lixo": chk_lixo,
+                    "valor_total": total_supabase
+                }).execute()
+
+                # 3. Exibe mensagem de sucesso na tela com o valor calculated
+                str_visual.success(f"✅ Sucesso! Orçamento de R$ {total_supabase:.2f}  salvo no Supabase!")
+
+            except Exception as erro:
+                str_visual.error(f"❌ Erro ao conectar ou salvar no banco: {erro}")
+
+    # ---- SEÇÃO HERO / BANNER PRINCIPAL ----
     col_banner_texto, col_banner_img = str_visual.columns([2, 2], vertical_alignment="center")
 
     with col_banner_texto:
@@ -96,7 +142,7 @@ with tab1:
 
     str_visual.markdown("""<h2 class="titulo_do_meio">Empresa de Roçagem e Conservação de Terrenos e Jardins!</h2>""", unsafe_allow_html=True)
 
-    # 4. QUADRADOS DE DIFERENCIAIS (OS 4 CARDS VERDES)
+    # ---- QUADRADOS DE DIFERENCIAIS (OS 4 CARDS VERDES) ----
     str_visual.markdown('<div class="espacador"></div>', unsafe_allow_html=True)
 
     card1, card2, card3, card4 = str_visual.columns(4)
@@ -113,7 +159,7 @@ with tab1:
     with card4:
         str_visual.markdown('<div class="card-diferencial"><h3>Garantido</h3><p>Compromisso com a limpeza e satisfação do cliente.</p></div>', unsafe_allow_html=True)
 
-    # 5. SISTEMA DE ORÇAMENTO ATUALIZADO (MODERNO)
+    # ---- SISTEMA DE ORÇAMENTO ATUALIZADO (MODERNO) ----
     str_visual.markdown('<div class="espacador"></div>', unsafe_allow_html=True)
 
     str_visual.markdown("""
@@ -123,18 +169,18 @@ with tab1:
         </div>
     """, unsafe_allow_html=True)
 
-    # Bloco do formulário público de cálculo
+    # Bloco do formulário de estimativa rápida
     with str_visual.container(key="formulario-orcamento-pagina"):
         f_col1, f_col2, f_col3, f_col4 = str_visual.columns(4)
 
         with f_col1:
-            nome_cliente = str_visual.text_input("Qual seu nome?", placeholder="Digite seu nome", key="home_nome")
+            nome_cliente = str_visual.text_input("Qual seu nome?", placeholder="Digite seu nome", key="nome_estimativa")
         with f_col2:
-            area_terreno = str_visual.number_input("Tamanho do terreno (m²):", min_value=0, value=0, step=50, key="home_area")
+            area_terreno = str_visual.number_input("Tamanho do terreno (m²):", min_value=0, value=0, step=50, key="area_estimativa")
         with f_col3:
-            tipo_mato = str_visual.selectbox("Tipo de mato:", ["Baixo", "Médio", "Alto"], key="home_mato")
+            tipo_mato = str_visual.selectbox("Tipo de mato:", ["Baixo", "Médio", "Alto"], key="mato_estimativa")
         with f_col4:
-            dificuldade = str_visual.selectbox("Dificuldade do terreno:", ["Baixa (Plano)", "Média (Aclive/Declive)", "Alta (Pedras/Lixo)"], key="home_dif")
+            dificuldade = str_visual.selectbox("Dificuldade do terreno:", ["Baixa (Plano)", "Média (Aclive/Declive)", "Alta (Pedras/Lixo)"], key="dif_estimativa")
 
         # Lógica de cálculo matemática
         preco_base = 1.50
@@ -156,7 +202,7 @@ with tab1:
         with col_btn_calcular:
             gerar_orcamento = str_visual.button("Calcular Orçamento", key="butao", use_container_width=True)
 
-    # 6. RESULTADO DO ORÇAMENTO
+    # ---- RESULTADO DO ORÇAMENTO ----
     if gerar_orcamento:
         str_visual.markdown(f"""
             <div class="resultado-box">
@@ -173,71 +219,17 @@ with tab1:
 
 
 # ==============================================================================
-# ABA 2 - SOBRE (INFORMAÇÕES INSTITUCIONAIS)
+# ABAS SECUNDÁRIAS (VAZIAS PARA VOCÊ FAZER DEPOIS)
 # ==============================================================================
 with tab2:
-    str_visual.markdown('<div class="espacador"></div>', unsafe_allow_html=True)
-    str_visual.title("ℹ️ Sobre a MTS Roçagem")
-    str_visual.subheader("Nossa História e Compromisso")
-    str_visual.markdown("""
-    <div style="background-color: rgba(255,255,255,0.8); padding: 20px; border-radius: 10px; color: #111;">
-        <p>A MTS Roçagem oferece os melhores serviços profissionais de limpeza e conservação de terrenos da região.</p>
-        <p>Atendemos com agilidade, equipamentos modernos e preço justo em Saquarema, Araruama e São Vicente.</p>
-    </div>
-    """, unsafe_allow_html=True)
+    str_visual.write("Conteúdo da aba Sobre em breve...")
 
-
-# ==============================================================================
-# ABA 3 - LISTA / BANCO DE DADOS (FORMULÁRIO SUPABASE)
-# ==============================================================================
 with tab3:
-    str_visual.markdown('<div class="espacador"></div>', unsafe_allow_html=True)
-    
-    # Configura as credenciais coletando dos Secrets
-    SUPABASE_URL = str_visual.secrets["SUPABASE_URL"]
-    SUPABASE_KEY = str_visual.secrets["SUPABASE_KEY"]
-
-    # Inicializa o cliente do banco de dados na nuvem
-    supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
-
-    str_visual.title("🌱 Portal Roçagem Saquarema")
-    str_visual.subheader("Olá Claudio! Testando o banco de dados com Streamlit")
-
-    # Formulário oficial do banco de dados
-    with str_visual.form("formulario_orcamento"):
-        txt_nome = str_visual.text_input("Nome do Cliente", placeholder="Ex: Danilo", key="db_nome")
-        txt_whatsapp = str_visual.text_input("WhatsApp", placeholder="Ex: 229098807", key="db_zap")
-        txt_terreno = str_visual.number_input("Tamanho do Terreno (m²)", min_value=0, step=1, key="db_area")
-        chk_lixo = str_visual.checkbox("Com retirada de lixo?", key="db_lixo")
-
-        btn_enviar = str_visual.form_submit_button("Calcular e Salvar no Banco")
-
-    # Lógica de processamento inserida corretamente na aba3
-    if btn_enviar:
-        if not txt_nome or not txt_whatsapp or txt_terreno == 0:
-            str_visual.warning("⚠️ Por favor, preencha todos os campos do formulário!")
-        else:
-            try:
-                valor_base = txt_terreno * 1.50
-                adicional_lixo = 100.0 if chk_lixo else 0.0
-                total_supabase = valor_base + adicional_lixo
-
-                supabase.table("orcamentos").insert({
-                    "nome_cliente": txt_nome,
-                    "whatsapp": txt_whatsapp,
-                    "tamanho_terreno": txt_terreno,
-                    "com_retirada_lixo": chk_lixo,
-                    "valor_total": total_supabase
-                }).execute()
-
-                str_visual.success(f"✅ Sucesso! Orçamento de R$ {total_supabase:.2f} salvo no Supabase!")
-
-            except Exception as erro:
-                str_visual.error(f"❌ Erro ao conectar ou salvar no banco: {erro}")
+    str_visual.write("Conteúdo da aba Lista em breve...")
 
 
 # ==============================================================================
-# 7. RODAPÉ (FOOTER PROFISSIONAL - Fica fora das abas para aparecer em todas)
+# 7. RODAPÉ (FOOTER PROFISSIONAL) - Fica fixo no fim do site
 # ==============================================================================
 str_visual.markdown('<div class="espacador"></div>', unsafe_allow_html=True)
 str_visual.markdown("""
