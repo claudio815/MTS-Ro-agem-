@@ -51,195 +51,193 @@ if fundo_base64:
 with str_visual.container(key="nav-menu"):
     # Criamos 2 colunas: Logo e Links do Menu
     col_logo, col_links = str_visual.columns([1, 1], vertical_alignment="center")
-    
+
     with col_logo:
         # Texto simulando a logo profissional verde da imagem
         str_visual.markdown('<div class="logo-texto"> MTS ROÇAGEM</div><div class="logo-sub">SERVIÇOS PROFISSIONAIS</div>', unsafe_allow_html=True)
-        
+
     with col_links:
-      tab1, tab2, tab3 = str_visual.tabs(["Home", "Sobre", "Lista"])
-
-with tab2:
-  # ========================================================# CONEXÃO COM O BANCO DEDADOS (SUPABASE)=======================================================# Suas credenciais oficiais do projeto "Portal_Rocagem"
-  SUPABASE_URL = str_visual.secrets["SUPABASE_URL"]
-  SUPABASE_KEY = str_visual.secrets["SUPABASE_KEY"]
-
-  # Inicializa o cliente do banco de dados na nuvem
-  supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
-
-# ========================================================
-# CONFIGURAÇÃO DA INTERFACE DO USUÁRIO (STREAMLIT)
-# ========================================================
-  str_visual.title("🌱 Portal Roçagem Saquarema")
-  str_visual.subheader("Olá Claudio! Testando o banco de dados com Streamlit")
-
-# Formulário para organizar os campos na tela
-  with str_visual.form("formulario_orcamento"):
-    txt_nome = str_visual.text_input("Nome do Cliente", placeholder="Ex: Danilo")
-    txt_whatsapp = str_visual.text_input("WhatsApp", placeholder="Ex: 229098807")
-    txt_terreno = str_visual.number_input("Tamanho do Terreno (m²)", min_value=0, step=1)
-    chk_lixo = str_visual.checkbox("Com retirada de lixo?")
-
-    # Botão para disparar o cálculo e o envio
-    btn_enviar = str_visual.form_submit_button("Calcular e Salvar no Banco")
-
-  # ========================================================
-  # LÓGICA DE PROCESSAMENTO E SALVAMENTO (Identado dentro da Tab2)
-  # ========================================================
-  if btn_enviar:
-      # CORREÇÃO 2: Alterado de st.warning para str_visual.warning devido ao seu apelido do Streamlit
-      if not txt_nome or not txt_whatsapp or txt_terreno == 0:
-          str_visual.warning("⚠️ Por favor, preencha todos os campos do formulário!")
-      else:
-          try:
-              # 1. Realiza o cálculo do orçamento (Ex: R$ 1,50 por m² + R$ 100 do lixo)
-              valor_base = txt_terreno * 1.50
-              adicional_lixo = 100.0 if chk_lixo else 0.0
-              total_supabase = valor_base + adicional_lixo
-
-              # 2. Insere os dados diretamente na tabela "orcamentos" do Supabase
-              supabase.table("orcamentos").insert({
-                  "nome_cliente": txt_nome,
-                  "whatsapp": txt_whatsapp,
-                  "tamanho_terreno": txt_terreno,
-                  "com_retirada_lixo": chk_lixo,
-                  "valor_total": total_supabase
-              }).execute()
-
-              # 3. Exibe mensagem de sucesso na tela com o valor calculado
-              str_visual.success(f"✅ Sucesso! Orçamento de R$ {total_supabase:.2f} salvo no Supabase!")
-
-          except Exception as erro:
-              # Se houver algum erro de conexão, ele avisa na tela
-              str_visual.error(f"❌ Erro ao conectar ou salvar no banco: {erro}")
+        # Criando a estrutura das Abas organizadas
+        tab1, tab2, tab3 = str_visual.tabs(["Home", "Sobre", "Lista"])
 
 # ==============================================================================
-# 3. SEÇÃO HERO / BANNER PRINCIPAL
+# ABA 1 - HOME (CONTEÚDO PRINCIPAL DO SITE)
 # ==============================================================================
-# Criando um layout de duas colunas para o Banner (Texto gigante na esquerda, Imagem na direita)
-col_banner_texto, col_banner_img = str_visual.columns([2, 2], vertical_alignment="center")
+with tab1:
+    # 3. SEÇÃO HERO / BANNER PRINCIPAL
+    col_banner_texto, col_banner_img = str_visual.columns([2, 2], vertical_alignment="center")
 
-with col_banner_texto:
-    str_visual.markdown("""
-        <div class="hero-sessao">
-            <p class="hero-tagline">ROÇAGEM PROFISSIONAL EM</p>
-            <h1 class="hero-titulo">Saquarema,<br>Araruama e<br>São Vicente</h1>
-            <p class="hero-descricao">Terrenos limpos, rápido e sem complicação.<br>Orçamento na hora e preço justo!</p>
-        </div>
-    """, unsafe_allow_html=True)
-with col_banner_img:
-    str_visual.image("static/banner_rocadeira.jpg", width=800)
-      
-    
-# Botões de ação rápida abaixo do texto do banner
-col_btn1, col_btn2 = str_visual.columns([1, 1], vertical_alignment="center")
-with col_btn1:
-    str_visual.markdown('<a href="#sistema-de-orçamento-por-metro-m" class="btn-solicitar"> Solicitar Orçamento</a>', unsafe_allow_html=True)
-with col_btn2:
-    str_visual.markdown('<a href="tel:22992356039" class="btn-telefone">📞 (22) 99235-6039</a>', unsafe_allow_html=True)
-        
-# Selos/Badges de benefícios
-str_visual.markdown("""
-        <div class="badges-container">
-            <span class="badge">Atendimento rápido</span>
-            <span class="badge"> Equipamentos professionals</span>
-            <span class="badge"> Preço justo</span>
-        </div>
-    """, unsafe_allow_html=True)
-    
-str_visual.markdown("""<h2 class="titulo_do_meio">Empresa de Roçagem e Conservação de Terrenos e Jardins!</h2>""", unsafe_allow_html=True)
-
-
-# ==============================================================================
-# 4. QUADRADOS DE DIFERENCIAIS (OS 4 CARDS VERDES)
-# ==============================================================================
-str_visual.markdown('<div class="espacador"></div>', unsafe_allow_html=True)
-
-card1, card2, card3, card4 = str_visual.columns(4)
-
-with card1:
-    str_visual.markdown('<div class="card-diferencial"><h3> Corte rápido</h3><p>Limpeza de terrenos com agilidade e qualidade total.</p></div>', unsafe_allow_html=True)
-    str_visual.markdown("")
-with card2:
-    str_visual.markdown('<div class="card-diferencial"><h3> Mato alto</h3><p>Trabalhamos brutos com todos os tipos de vegetação.</p></div>', unsafe_allow_html=True)
-    str_visual.markdown("")
-with card3:
-    str_visual.markdown('<div class="card-diferencial"><h3> Atendimento Local</h3><p>Atendemos Saquarema, Araruama e São Vicente.</p></div>', unsafe_allow_html=True)
-    str_visual.markdown("")
-with card4:
-    str_visual.markdown('<div class="card-diferencial"><h3>Garantido</h3><p>Compromisso com a limpeza e satisfação do cliente.</p></div>', unsafe_allow_html=True)
-
-
-# ==============================================================================
-# 5. SISTEMA DE ORÇAMENTO ATUALIZADO (MODERNO)
-# ==============================================================================
-str_visual.markdown('<div class="espacador"></div>', unsafe_allow_html=True)
-
-str_visual.markdown("""
-    <div class="titulo-secao-container">
-        <h2 class="titulo-secao">Sistema de Orçamento por metro (m²)</h2>
-        <p class="subtitulo-secao">Preencha os dados abaixo e receba uma estimativa de preço na hora!</p>
-    </div>
-""", unsafe_allow_html=True)
-
-# Bloco do formulário
-with str_visual.container(key="formulario-orcamento-pagina"):
-    # Dividindo os campos em 4 colunas horizontais
-    f_col1, f_col2, f_col3, f_col4 = str_visual.columns(4)
-    
-    with f_col1:
-        nome_cliente = str_visual.text_input("Qual seu nome?", placeholder="Digite seu nome")
-    with f_col2:
-        area_terreno = str_visual.number_input("Tamanho do terreno (m²):", min_value=0, value=0, step=50)
-    with f_col3:
-        tipo_mato = str_visual.selectbox("Tipo de mato:", ["Baixo", "Médio", "Alto"])
-    with f_col4:
-        dificuldade = str_visual.selectbox("Dificuldade do terreno:", ["Baixa (Plano)", "Média (Aclive/Declive)", "Alta (Pedras/Lixo)"])
-
-    # Lógica de cálculo matemática
-    preco_base = 1.50
-    if tipo_mato == "Médio":
-        preco_base = 2.50
-    elif tipo_mato == "Alto":
-        preco_base = 3.50
-        
-    # Adicional por dificuldade do terreno
-    if dificuldade == "Média (Aclive/Declive)":
-        preco_base += 0.50
-    elif dificuldade == "Alta (Pedras/Lixo)":
-        preco_base += 1.00
-        
-    total = area_terreno * preco_base
-
-    str_visual.markdown('<div style="height: 15px;"></div>', unsafe_allow_html=True)
-    
-    # Criando as colunas para o botão ficar organizado
-    col_btn_calcular, col_vazia = str_visual.columns([1, 3])
-    
-    with col_btn_calcular:
-        gerar_orcamento = str_visual.button("Calcular Orçamento", key="butao", use_container_width=True)
-
-
-# ==============================================================================
-# 6. RESULTADO DO ORÇAMENTO (DESIGN DE TABELA DA SEGUNDA IMAGEM)
-# ==============================================================================
-if gerar_orcamento:
-    str_visual.markdown(f"""
-        <div class="resultado-box">
-            <h3 style="text-align: center; color: #14532d; margin-bottom: 20px;">Resultado do Orçamento</h3>
-            <div class="resultado-grid">
-                <div class="res-item"><strong> Cliente:</strong><br>{nome_cliente if nome_cliente else "Não informado"}</div>
-                <div class="res-item"><strong> Área:</strong><br>{area_terreno} m²</div>
-                <div class="res-item"><strong> Tipo de Mato:</strong><br>{tipo_mato}</div>
-                <div class="res-item valor-destaque"><strong> Valor Estimado:</strong><br>R$ {total:.2f}</div>
+    with col_banner_texto:
+        str_visual.markdown("""
+            <div class="hero-sessao">
+                <p class="hero-tagline">ROÇAGEM PROFISSIONAL EM</p>
+                <h1 class="hero-titulo">Saquarema,<br>Araruama e<br>São Vicente</h1>
+                <p class="hero-descricao">Terrenos limpos, rápido e sem complicação.<br>Orçamento na hora e preço justo!</p>
             </div>
-            <p class="aviso-orcamento"> Este é um valor estimado. Para o orçamento final e agendamento, entre em contato conosco!</p>
+        """, unsafe_allow_html=True)
+    with col_banner_img:
+        str_visual.image("static/banner_rocadeira.jpg", width=800)
+
+    # Botões de ação rápida abaixo do texto do banner
+    col_btn1, col_btn2 = str_visual.columns([1, 1], vertical_alignment="center")
+    with col_btn1:
+        str_visual.markdown('<a href="#sistema-de-orçamento-por-metro-m" class="btn-solicitar"> Solicitar Orçamento</a>', unsafe_allow_html=True)
+    with col_btn2:
+        str_visual.markdown('<a href="tel:22992356039" class="btn-telefone">📞 (22) 99235-6039</a>', unsafe_allow_html=True)
+
+    # Selos/Badges de benefícios
+    str_visual.markdown("""
+            <div class="badges-container">
+                <span class="badge">Atendimento rápido</span>
+                <span class="badge"> Equipamentos professionals</span>
+                <span class="badge"> Preço justo</span>
+            </div>
+        """, unsafe_allow_html=True)
+
+    str_visual.markdown("""<h2 class="titulo_do_meio">Empresa de Roçagem e Conservação de Terrenos e Jardins!</h2>""", unsafe_allow_html=True)
+
+    # 4. QUADRADOS DE DIFERENCIAIS (OS 4 CARDS VERDES)
+    str_visual.markdown('<div class="espacador"></div>', unsafe_allow_html=True)
+
+    card1, card2, card3, card4 = str_visual.columns(4)
+
+    with card1:
+        str_visual.markdown('<div class="card-diferencial"><h3> Corte rápido</h3><p>Limpeza de terrenos com agilidade e qualidade total.</p></div>', unsafe_allow_html=True)
+        str_visual.markdown("")
+    with card2:
+        str_visual.markdown('<div class="card-diferencial"><h3> Mato alto</h3><p>Trabalhamos brutos com todos os tipos de vegetação.</p></div>', unsafe_allow_html=True)
+        str_visual.markdown("")
+    with card3:
+        str_visual.markdown('<div class="card-diferencial"><h3> Atendimento Local</h3><p>Atendemos Saquarema, Araruama e São Vicente.</p></div>', unsafe_allow_html=True)
+        str_visual.markdown("")
+    with card4:
+        str_visual.markdown('<div class="card-diferencial"><h3>Garantido</h3><p>Compromisso com a limpeza e satisfação do cliente.</p></div>', unsafe_allow_html=True)
+
+    # 5. SISTEMA DE ORÇAMENTO ATUALIZADO (MODERNO)
+    str_visual.markdown('<div class="espacador"></div>', unsafe_allow_html=True)
+
+    str_visual.markdown("""
+        <div class="titulo-secao-container">
+            <h2 class="titulo-secao">Sistema de Orçamento por metro (m²)</h2>
+            <p class="subtitulo-secao">Preencha os dados abaixo e receba uma estimativa de preço na hora!</p>
         </div>
+    """, unsafe_allow_html=True)
+
+    # Bloco do formulário público de cálculo
+    with str_visual.container(key="formulario-orcamento-pagina"):
+        f_col1, f_col2, f_col3, f_col4 = str_visual.columns(4)
+
+        with f_col1:
+            nome_cliente = str_visual.text_input("Qual seu nome?", placeholder="Digite seu nome", key="home_nome")
+        with f_col2:
+            area_terreno = str_visual.number_input("Tamanho do terreno (m²):", min_value=0, value=0, step=50, key="home_area")
+        with f_col3:
+            tipo_mato = str_visual.selectbox("Tipo de mato:", ["Baixo", "Médio", "Alto"], key="home_mato")
+        with f_col4:
+            dificuldade = str_visual.selectbox("Dificuldade do terreno:", ["Baixa (Plano)", "Média (Aclive/Declive)", "Alta (Pedras/Lixo)"], key="home_dif")
+
+        # Lógica de cálculo matemática
+        preco_base = 1.50
+        if tipo_mato == "Médio":
+            preco_base = 2.50
+        elif tipo_mato == "Alto":
+            preco_base = 3.50
+
+        if dificuldade == "Média (Aclive/Declive)":
+            preco_base += 0.50
+        elif dificuldade == "Alta (Pedras/Lixo)":
+            preco_base += 1.00
+
+        total = area_terreno * preco_base
+
+        str_visual.markdown('<div style="height: 15px;"></div>', unsafe_allow_html=True)
+
+        col_btn_calcular, col_vazia = str_visual.columns([1, 3])
+        with col_btn_calcular:
+            gerar_orcamento = str_visual.button("Calcular Orçamento", key="butao", use_container_width=True)
+
+    # 6. RESULTADO DO ORÇAMENTO
+    if gerar_orcamento:
+        str_visual.markdown(f"""
+            <div class="resultado-box">
+                <h3 style="text-align: center; color: #14532d; margin-bottom: 20px;">Resultado do Orçamento</h3>
+                <div class="resultado-grid">
+                    <div class="res-item"><strong> Cliente:</strong><br>{nome_cliente if nome_cliente else "Não informado"}</div>
+                    <div class="res-item"><strong> Área:</strong><br>{area_terreno} m²</div>
+                    <div class="res-item"><strong> Tipo de Mato:</strong><br>{tipo_mato}</div>
+                    <div class="res-item valor-destaque"><strong> Valor Estimado:</strong><br>R$ {total:.2f}</div>
+                </div>
+                <p class="aviso-orcamento"> Este é um valor estimado. Para o orçamento final e agendamento, entre em contato conosco!</p>
+            </div>
+        """, unsafe_allow_html=True)
+
+
+# ==============================================================================
+# ABA 2 - SOBRE (INFORMAÇÕES INSTITUCIONAIS)
+# ==============================================================================
+with tab2:
+    str_visual.markdown('<div class="espacador"></div>', unsafe_allow_html=True)
+    str_visual.title("ℹ️ Sobre a MTS Roçagem")
+    str_visual.subheader("Nossa História e Compromisso")
+    str_visual.markdown("""
+    <div style="background-color: rgba(255,255,255,0.8); padding: 20px; border-radius: 10px; color: #111;">
+        <p>A MTS Roçagem oferece os melhores serviços profissionais de limpeza e conservação de terrenos da região.</p>
+        <p>Atendemos com agilidade, equipamentos modernos e preço justo em Saquarema, Araruama e São Vicente.</p>
+    </div>
     """, unsafe_allow_html=True)
 
 
 # ==============================================================================
-# 7. RODAPÉ (FOOTER PROFISSIONAL)
+# ABA 3 - LISTA / BANCO DE DADOS (FORMULÁRIO SUPABASE)
+# ==============================================================================
+with tab3:
+    str_visual.markdown('<div class="espacador"></div>', unsafe_allow_html=True)
+    
+    # Configura as credenciais coletando dos Secrets
+    SUPABASE_URL = str_visual.secrets["SUPABASE_URL"]
+    SUPABASE_KEY = str_visual.secrets["SUPABASE_KEY"]
+
+    # Inicializa o cliente do banco de dados na nuvem
+    supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+    str_visual.title("🌱 Portal Roçagem Saquarema")
+    str_visual.subheader("Olá Claudio! Testando o banco de dados com Streamlit")
+
+    # Formulário oficial do banco de dados
+    with str_visual.form("formulario_orcamento"):
+        txt_nome = str_visual.text_input("Nome do Cliente", placeholder="Ex: Danilo", key="db_nome")
+        txt_whatsapp = str_visual.text_input("WhatsApp", placeholder="Ex: 229098807", key="db_zap")
+        txt_terreno = str_visual.number_input("Tamanho do Terreno (m²)", min_value=0, step=1, key="db_area")
+        chk_lixo = str_visual.checkbox("Com retirada de lixo?", key="db_lixo")
+
+        btn_enviar = str_visual.form_submit_button("Calcular e Salvar no Banco")
+
+    # Lógica de processamento inserida corretamente na aba3
+    if btn_enviar:
+        if not txt_nome or not txt_whatsapp or txt_terreno == 0:
+            str_visual.warning("⚠️ Por favor, preencha todos os campos do formulário!")
+        else:
+            try:
+                valor_base = txt_terreno * 1.50
+                adicional_lixo = 100.0 if chk_lixo else 0.0
+                total_supabase = valor_base + adicional_lixo
+
+                supabase.table("orcamentos").insert({
+                    "nome_cliente": txt_nome,
+                    "whatsapp": txt_whatsapp,
+                    "tamanho_terreno": txt_terreno,
+                    "com_retirada_lixo": chk_lixo,
+                    "valor_total": total_supabase
+                }).execute()
+
+                str_visual.success(f"✅ Sucesso! Orçamento de R$ {total_supabase:.2f} salvo no Supabase!")
+
+            except Exception as erro:
+                str_visual.error(f"❌ Erro ao conectar ou salvar no banco: {erro}")
+
+
+# ==============================================================================
+# 7. RODAPÉ (FOOTER PROFISSIONAL - Fica fora das abas para aparecer em todas)
 # ==============================================================================
 str_visual.markdown('<div class="espacador"></div>', unsafe_allow_html=True)
 str_visual.markdown("""
