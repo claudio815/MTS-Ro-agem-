@@ -9,28 +9,6 @@
     color: #1f2937;
 }
 
-
-/* 1. Dá uma cor de fundo para o container do seu menu superior (Navbar) */
-div[data-testid="stHeader"] {
-    background-color: #14532d !important; /* Um verde escuro profissional, ou a cor que preferir */
-}
-
-/* 2. Força os textos das Abas (Home, Sobre, Lista) a ficarem visíveis */
-button[data-testid="stMarkdownContainer"] p {
-    color: #232121 !important; /* Texto branco para contrastar com o fundo escuro */
-    font-weight: bold;
-}
-
-/* 3. Ajusta a cor da aba quando ela estiver selecionada/ativa */
-button[aria-selected="true"] {
-    border-bottom-color: #a3e635 !important; /* Linha de destaque em verde limão */
-    color: #a3e635 !important;
-}
-
-
-
-
-
 /* Remove margens e topo padrão feio do Streamlit */
 .stMainBlockContainer {
     padding-top: 0.5rem !important;
@@ -49,7 +27,7 @@ header {
    NAVBAR / CABEÇALHO SUPERIOR
    ============================================================================== */
 .st-key-nav-menu {
-    background-color: #232121 !important;
+    background-color: #ffffff !important;
     padding: 15px 30px !important;
     border-radius: 15px 15px 15px 15px !important;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
@@ -323,4 +301,5 @@ header {
     color: #bbf7d0;
     line-height: 1.6;
 }
+
 
