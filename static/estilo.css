@@ -17,7 +17,7 @@ div[data-testid="stHeader"] {
 
 /* 2. Força os textos das Abas (Home, Sobre, Lista) a ficarem visíveis */
 button[data-testid="stMarkdownContainer"] p {
-    color: #ffffff !important; /* Texto branco para contrastar com o fundo escuro */
+    color: #232121 !important; /* Texto branco para contrastar com o fundo escuro */
     font-weight: bold;
 }
 
