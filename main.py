@@ -128,7 +128,7 @@ with col_banner_texto:
         </div>
     """, unsafe_allow_html=True)
 with col_banner_img:
-    str_visual.image("static/banner_roçadeira.jpg", width=800)
+    str_visual.image("static/banner_rocadeira.jpg", width=800)
       
     
 # Botões de ação rápida abaixo do texto do banner
