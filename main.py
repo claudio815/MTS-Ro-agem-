@@ -248,3 +248,4 @@ str_visual.markdown("""
         <p style="text-align: center; font-size: 12px; color: #a3e635;">© 2026 MTS Roçagem. Desenvolvido no Termux. Todos os direitos reservados.</p>
     </div>
 """, unsafe_allow_html=True)
+
