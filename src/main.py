@@ -1,7 +1,6 @@
 import urllib.parse
 import flet as ft
 
-# ==================== CONFIGURAÇÕES DO NEGÓCIO ====================
 WHATSAPP_NUMERO = "5522992356039"
 
 PRECO_POR_M2 = {
@@ -117,7 +116,7 @@ def main(page: ft.Page):
     )
     text_secundario2 = ft.Container(
       content=ft.Text(
-            "ATENDIMENTO: Bacáxa, Araruama e São Vicente de Paula",
+            "ATENDIMENTO: Bacaxa; Araruama e São Vicente de Paula",
             size=15,
             weight=ft.FontWeight.BOLD,
             #color="#A5FF00AD",
@@ -289,7 +288,7 @@ def main(page: ft.Page):
                             controls=[
                                 ft.Icon(ft.Icons.EMAIL, color="green", size=16),
                                 ft.Text(
-                                    "MTSrocagem@gmail.com",
+                                    "mtsrocagem@gmail.com",
                                     size=13,
                                     color="white",
                                 ),
