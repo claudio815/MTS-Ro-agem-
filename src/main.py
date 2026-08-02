@@ -5,9 +5,9 @@ import flet as ft
 WHATSAPP_NUMERO = "5522992356039"
 
 PRECO_POR_M2 = {
-    "Mato Baixo": 3.00,
-    "Mato Médio": 4.50,
-    "Mato Alto": 6.50,
+    "Mato Baixo": 1.50,
+    "Mato Médio": 2.00,
+    "Mato Alto": 3.00,
 }
 
 AREA_MINIMA_M2 = 50
@@ -28,17 +28,26 @@ def calcular_orcamento(area_m2: float, tipo_mato: str) -> dict:
 
 
 def main(page: ft.Page):
-    page.title = "MTS-ROÇAGEM - Orçamento"
+    # Configurações da página e Metatags para preview do WhatsApp
+    page.title = "MTS-ROÇAGEM - Serviços de Roçagem e Limpeza"
     page.scroll = ft.ScrollMode.AUTO
     page.padding = 10
     page.spacing = 15
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+
+    page.meta_tags = {
+        "og:title": "MTS-ROÇAGEM | Serviços Profissionais de Roçagem",
+        "og:description": "Orçamento rápido de roçagem e limpeza de terrenos em Saquarema e região.",
+        "og:image": "https://mts-ro-agem.onrender.com/banner1.jpg",
+        "description": "Calculadora e orçamento de serviços de roçagem em Saquarema.",
+    }
 
     # ==================== CABEÇALHO ====================
     header = ft.Container(
         content=ft.Row(
             controls=[
                 ft.Image(src="/logo.jpeg", width=80, height=50),
+                ft.Text("ONLINE", size=18, margin=10, color="#00FFD5")
             ],
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
         ),
@@ -54,8 +63,8 @@ def main(page: ft.Page):
 
     text_secundario = ft.Container(
         content=ft.Text(
-            "Chega de se preocupar com seu terreno e quintal.",
-            size=20,
+            "Ajudamos você a manter seu quintal limpo, seguro e bem cuidado com transparência, preço justo e atendimento rápido.",
+            size=15,
             weight=ft.FontWeight.BOLD,
             color="green",
             text_align=ft.TextAlign.CENTER,
@@ -105,6 +114,17 @@ def main(page: ft.Page):
                 )
             ),
         ],
+    )
+    text_secundario2 = ft.Container(
+      content=ft.Text(
+            "ATENDIMENTO: Bacáxa, Araruama e São Vicente de Paula",
+            size=15,
+            weight=ft.FontWeight.BOLD,
+            #color="#A5FF00AD",
+            text_align=ft.TextAlign.CENTER,
+        ),
+        alignment=ft.Alignment.CENTER,
+        padding=10,
     )
 
     # ==================== FORMULÁRIO DE ORÇAMENTO ====================
@@ -193,12 +213,10 @@ def main(page: ft.Page):
             f"Valor estimado do serviço: R$ {resultado['valor_final']:.2f}"
         )
 
-        # Atualiza o link do botão de WhatsApp com a mensagem pronta
         botao_whatsapp.url = obter_link_whatsapp()
         page.update()
 
     def on_atualizar_whatsapp(e):
-        """Sempre que houver o clique no botão do WhatsApp, garante que a URL mais recente é atribuída"""
         if validar_campos():
             botao_whatsapp.url = obter_link_whatsapp()
             page.update()
@@ -211,7 +229,6 @@ def main(page: ft.Page):
         on_click=on_calcular,
     )
 
-    # Botão com link direto para não depender de chamadas com erro de socket
     botao_whatsapp = ft.ElevatedButton(
         "Enviar pelo WhatsApp",
         icon=ft.Icons.CHAT,
@@ -313,9 +330,14 @@ def main(page: ft.Page):
         banner_img,
         text_secundario,
         galeria,
+        text_secundario2,
         formulario_orcamento,
         rodape,
     )
 
 
-ft.app(target=main)
+ft.app(
+    target=main,
+    assets_dir="assets",
+)
+
