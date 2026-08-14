@@ -38,7 +38,8 @@ jobs:
           if [ -f requisitos.txt ]; then pip install -r requisitos.txt; fi
 
       - name: Gerar APK
-        run: flet build apk
+        run: echo "y" | flet build apk
+
 
       - name: Salvar APK
         uses: actions/upload-artifact@v4
